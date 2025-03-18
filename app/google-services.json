@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "714625215431",
+    "firebase_url": "https://mybudgetapp-34c54-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "mybudgetapp-34c54",
+    "storage_bucket": "mybudgetapp-34c54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714625215431:android:4310e9d0f5b614267a87e2",
+        "android_client_info": {
+          "package_name": "com.example.mybudgetapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYeAn92Be_5acdNqHPdcBVWnO9S7kqXXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
