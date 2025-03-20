@@ -17,10 +17,11 @@ import com.example.mybudgetapp.ui.model.Transaction
 import com.example.mybudgetapp.ui.model.TransactionType
 import com.example.mybudgetapp.ui.viewModel.DateAndMonthViewModel
 import com.example.mybudgetapp.ui.viewModel.ExpenseViewModel
+import com.example.mybudgetapp.ui.viewModel.MainCategoryViewModel
 import com.example.mybudgetapp.ui.viewModel.TransactionViewModel
 
 @Composable
-fun TransactionScreen(navController: NavController,dateAndMonthViewModel: DateAndMonthViewModel, expenseViewModel: ExpenseViewModel, viewModel: TransactionViewModel = viewModel()) {
+fun TransactionScreen(navController: NavController,dateAndMonthViewModel: DateAndMonthViewModel, expenseViewModel: ExpenseViewModel,mainCategoryViewModel: MainCategoryViewModel, viewModel: TransactionViewModel = viewModel()) {
     var searchQuery by remember { mutableStateOf("") }
 
     //filter transactions when the searchQuery changes
@@ -29,7 +30,7 @@ fun TransactionScreen(navController: NavController,dateAndMonthViewModel: DateAn
     }
 //for common structure of  transaction screen and it include top bar and buttom bar
     Scaffold(
-        topBar = { MainTopBar(navController, dateAndMonthViewModel, expenseViewModel ) },
+        topBar = { MainTopBar(navController, dateAndMonthViewModel, expenseViewModel, mainCategoryViewModel ) },
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         Column(

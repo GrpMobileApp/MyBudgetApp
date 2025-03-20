@@ -73,7 +73,7 @@ fun HomeScreen(
 
     Scaffold (
         // Top bar receives a function to update the selected month and year
-        topBar = { MainTopBar(navController, dateAndMonthViewModel, expenseViewModel) },
+        topBar = { MainTopBar(navController, dateAndMonthViewModel, expenseViewModel, mainCategoryViewModel) },
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         Column(

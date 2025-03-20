@@ -44,7 +44,7 @@ fun MyBudgetApp() {
         startDestination = "home"
     ){
         composable(route = "home") { HomeScreen(navController, dateAndMonthViewModel, categoryViewModel, mainCategoryViewModel, expenseViewModel ) }
-        composable(route = "outflow") { TransactionScreen(navController, dateAndMonthViewModel, expenseViewModel) }
+        composable(route = "outflow") { TransactionScreen(navController, dateAndMonthViewModel, expenseViewModel,mainCategoryViewModel) }
     }
 }
 

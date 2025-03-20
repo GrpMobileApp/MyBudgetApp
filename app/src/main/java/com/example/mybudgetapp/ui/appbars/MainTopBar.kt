@@ -41,12 +41,13 @@ import androidx.navigation.NavController
 import com.example.mybudgetapp.ui.components.AddExpenseDialog
 import com.example.mybudgetapp.ui.viewModel.DateAndMonthViewModel
 import com.example.mybudgetapp.ui.viewModel.ExpenseViewModel
+import com.example.mybudgetapp.ui.viewModel.MainCategoryViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun MainTopBar(navController: NavController, dateAndMonthViewModel: DateAndMonthViewModel, expenseViewModel: ExpenseViewModel ){
+fun MainTopBar(navController: NavController, dateAndMonthViewModel: DateAndMonthViewModel, expenseViewModel: ExpenseViewModel, mainCategoryViewModel: MainCategoryViewModel ){
     var expanded by remember {  mutableStateOf(false) } // Controls dropdown visibility
     val selectedMonth by dateAndMonthViewModel.selectedMonth.collectAsState()
     val selectedYear by dateAndMonthViewModel.selectedYear.collectAsState()
@@ -175,7 +176,9 @@ fun MainTopBar(navController: NavController, dateAndMonthViewModel: DateAndMonth
             onSubmit = {category, subCategory, note, amount ->
                 expenseViewModel.addExpenseItem(category, subCategory, note,amount)
                 showExpenseAddDialog = false
-            }
+            },
+            mainCategoryViewModel
+
         )
     }
 }

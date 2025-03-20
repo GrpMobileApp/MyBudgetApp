@@ -1,8 +1,13 @@
 package com.example.mybudgetapp.ui.viewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mybudgetapp.ui.model.CategoryItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class CategoryViewModel:ViewModel() {
     private val _categoryList = MutableStateFlow(
