@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,10 +35,22 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mybudgetapp.ui.appbars.BottomBar
 import com.example.mybudgetapp.ui.appbars.MainTopBar
+import com.example.mybudgetapp.ui.components.AddCategoryDialog
+import com.example.mybudgetapp.ui.model.CategoryItem
+import com.example.mybudgetapp.ui.viewModel.CategoryViewModel
 import com.example.mybudgetapp.ui.viewModel.DateAndMonthViewModel
+import com.example.mybudgetapp.ui.viewModel.ExpenseViewModel
+import com.example.mybudgetapp.ui.viewModel.MainCategoryViewModel
+import java.util.Locale.Category
 
 @Composable
-fun HomeScreen(navController: NavController, dateAndMonthViewModel: DateAndMonthViewModel) {
+fun HomeScreen(
+    navController: NavController,
+    dateAndMonthViewModel: DateAndMonthViewModel,
+    categoryViewModel: CategoryViewModel,
+    mainCategoryViewModel: MainCategoryViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
 
     // List of selectable budget categories (Planned, Spent, and Remaining)
     val mainOptionList = listOf("Planned", "Spent", "Remaining")
@@ -47,16 +62,24 @@ fun HomeScreen(navController: NavController, dateAndMonthViewModel: DateAndMonth
         selectedOption = opt
     }
 
+    // Collect the main category list from the mainCategoryViewModel
+    val mainCategoryList by mainCategoryViewModel.mainCategoryList.collectAsState()
+
+    // Collect the category list from the CategoryViewModel
+    val categoryList by categoryViewModel.categoryList.collectAsState()
+    // State to control the visibility of the Add Category dialog(Controls popup visibility)
+    var showDialog by remember { mutableStateOf(false) }
+
+
     Scaffold (
         // Top bar receives a function to update the selected month and year
-        topBar = { MainTopBar(navController, dateAndMonthViewModel) },
+        topBar = { MainTopBar(navController, dateAndMonthViewModel, expenseViewModel, mainCategoryViewModel) },
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState()),
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // selected month and year from ViewModel
@@ -97,10 +120,63 @@ fun HomeScreen(navController: NavController, dateAndMonthViewModel: DateAndMonth
                     }
                 }
             }
-            Text(
-                text = "This is home screen"
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+
+            //content of home screen
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){ mainCategoryList.forEach { category ->
+                Card (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    elevation  = CardDefaults.elevatedCardElevation(defaultElevation = 10.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                ){
+                    Column (
+                        modifier = Modifier.padding(10.dp)
+                    ){
+                        Text(
+                            text = category,
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        categoryList.forEachIndexed { index, cat ->
+                            Row (
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp), // Space between items
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ){
+                                Text(text = cat.category, fontSize = 15.sp)
+                                Text(text = cat.amount.toString(),fontSize = 15.sp)
+                            }
+                        }
+                        // "Add Item" button
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(onClick = { showDialog = true }) {
+                            Text("Add Category")
+                        }
+
+                    }
+                }
+            }
+
+            }
         }
+    }
+    // Show dialog when user clicks "Add Category"
+    if (showDialog) {
+        AddCategoryDialog (
+            onDismiss = { showDialog = false },
+            onSubmit = { category, amount ->
+                categoryViewModel.addCategoryItem(category, amount )
+                showDialog = false
+            }
+        )
     }
 }
